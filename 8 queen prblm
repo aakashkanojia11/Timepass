@@ -1,0 +1,55 @@
+# Print the chessboard
+def print_board(board):
+    for row in board:
+        print(row)
+    print()
+
+# Check if placing a queen is safe
+def is_safe(board, row, col):
+    # Check this row on the left side
+    for c in range(col):
+        if board[row][c] == 1:
+            return False
+
+    # Check upper-left diagonal
+    r, c = row, col
+    while r >= 0 and c >= 0:
+        if board[r][c] == 1:
+            return False
+        r -= 1
+        c -= 1
+
+    # Check lower-left diagonal
+    r, c = row, col
+    while r < 8 and c >= 0:
+        if board[r][c] == 1:
+            return False
+        r += 1
+        c -= 1
+
+    return True
+
+# Solve using backtracking
+def solve_8_queens(board, col):
+    if col == 8:
+        return True
+
+    for row in range(8):
+        if is_safe(board, row, col):
+            board[row][col] = 1
+
+            if solve_8_queens(board, col + 1):
+                return True
+
+            board[row][col] = 0  # backtrack
+
+    return False
+
+# Main
+board = [[0]*8 for _ in range(8)]
+
+if solve_8_queens(board, 0):
+    print("8-Queens Solution:")
+    print_board(board)
+else:
+    print("No solution")
