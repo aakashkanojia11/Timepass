@@ -1,0 +1,35 @@
+from itertools import permutations
+
+# Function to calculate total distance of a given path
+def calculate_distance(graph, path):
+    distance = 0
+    for i in range(len(path)-1):
+        distance += graph[path[i]][path[i+1]]
+    distance += graph[path[-1]][path[0]]  # return to start
+    return distance
+
+def travelling_salesperson(graph):
+    nodes = list(range(len(graph)))
+    min_path = None
+    min_cost = float('inf')
+
+    for perm in permutations(nodes):
+        cost = calculate_distance(graph, perm)
+        if cost < min_cost:
+            min_cost = cost
+            min_path = perm
+
+    return min_path, min_cost
+
+# Example graph (distance matrix)
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+path, cost = travelling_salesperson(graph)
+
+print("Best Path:", path)
+print("Minimum Cost:", cost)
